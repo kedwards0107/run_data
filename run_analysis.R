@@ -1,4 +1,4 @@
-setwd("~/Desktop/Rprojects/Health")
+setwd("~/run_data")
 
 install.packages("wesanderson")
 library(tidyverse)
