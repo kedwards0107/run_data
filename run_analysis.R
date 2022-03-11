@@ -134,8 +134,9 @@ ggplot(joined_data, aes(month(Date, label=TRUE, abbr=TRUE),
   geom_bar(stat = "identity") +
   theme_classic()
 
+# %B for full month name, %b for month abbreviation 
 pvt <- ggplot(data = joined_data, aes(x = Date, y = Pace))
-pvt + theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1)) + scale_x_date(breaks = "1 month", date_labels = "%B") + geom_point(aes(color = Year), shape = 21, fill = "white", size = 3, stroke = 2) 
+pvt + theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1)) + scale_x_date(breaks = "1 month", date_labels = "%b") + geom_point(aes(color = Year), shape = 21, fill = "white", size = 3, stroke = 2) 
 
 pvt <- ggplot(data = joined_data, aes(x = Month, y = Pace))
 pvt + geom_point(aes(color=distance), shape = 21, fill = "white", 
