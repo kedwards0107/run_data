@@ -31,16 +31,17 @@ write.csv(joined_data, file = "joined_data_export.csv")
 
 # pace and distance by month and wrapped by year
 pvt <- ggplot(data = joined_data, aes(month(Date, label=TRUE, abbr=TRUE), y = Pace))
-pvt + geom_point(aes(color = distance), shape = 21, fill = "white", 
-                 size = 3, stroke = 2) + scale_color_gradientn(colors = rainbow(8)) +
+pvt + theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Pace by Month Faceted by Year") + geom_point(aes(color = distance), shape = 21, fill = "white", 
+                 size = 3, stroke = 2) + scale_color_gradientn(colors = rainbow(8)) + labs(x = "Months",
+                                                                                           y = "Pace") +
   facet_wrap(~Year) 
 
 # pace and distance by month and wrapped by year
 pvt <- ggplot(data = joined_data, aes(month(Date, label=TRUE, abbr=TRUE), y = Pace))
-pvt + geom_point(aes(color = distance), shape = 21, fill = "white", 
+pvt + theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Pace less than 10.5 \n by Month Faceted by Year") + geom_point(aes(color = distance), shape = 21, fill = "white", 
                  size = 2, stroke = 2) + scale_color_gradient2(midpoint=7.5, low="blue", mid="green",
                                                                high="red", space ="Lab" ) +
-  coord_cartesian(ylim = c(7.5,10.5)) +
+  coord_cartesian(ylim = c(7.0,10.5)) +
   theme(legend.position = "right", text = element_text(size=10)) + labs(x = "Months",
                                                                         y = "Pace") +
   facet_wrap(~Year) 
@@ -58,8 +59,15 @@ pvt + theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Runs") + geom_poi
 # Plot of pace by year
 ggplot(joined_data, aes(month(Date, label=TRUE, abbr=TRUE), 
                         Pace, group=factor(year(Date)), colour=factor(year(Date)))) +
-  geom_point() +
+  geom_point(shape = 21, fill = "white", 
+             size = 3, stroke = 2) +
   labs(x="Month", colour="Year") +
+  theme_classic()
+
+# Plot of pace by year
+ggplot(joined_data, aes(month(Date, label=TRUE, abbr=TRUE), 
+                        Pace, group=factor(year(Date)), colour=factor(year(Date)))) +
+  geom_bar(stat = "identity") +
   theme_classic()
 
 pvt <- ggplot(data = joined_data, aes(x = Date, y = Pace))
@@ -81,3 +89,8 @@ ovt <- ggplot(data = joined_data, aes(x = Date, y = Pace))
 ovt + ggtitle("Runs by Year and Pace faceted by Day of Week, Legend is Average Day Temp") + scale_x_date(breaks = "1 year", date_labels = "%Y") + geom_point(aes(color = TOBS), size = 1, stroke = 2) + 
   theme_light()  + scale_color_gradientn(colors = rainbow(5)) +
   facet_wrap("Day.of.week")
+
+ovt <- ggplot(data = joined_data, aes(x = distance, y = Pace)) 
+ovt + ggtitle("Runs by Distance and Pace faceted by Month, Legend is Average Day Temp") + geom_point(aes(color = TOBS), size = 1, stroke = 2) + 
+  theme_light()  + scale_color_gradientn(colors = rainbow(5)) +
+  facet_wrap("Month")
