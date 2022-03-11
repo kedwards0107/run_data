@@ -127,6 +127,13 @@ ggplot(joined_data, aes(month(Date, label=TRUE, abbr=TRUE),
   labs(x="Month", colour="Year") +
   theme_classic()
 
+ggplot(joined_data, aes(month(Date, label=TRUE, abbr=TRUE), 
+                        Pace, group=factor(year(Date)), colour=factor(year(Date)))) +
+  geom_smooth(model=lm) +
+  labs(x="Month", colour="Year") +
+  theme_classic()
+
+
 # Plot of pace by year
 ggplot(joined_data, aes(month(Date, label=TRUE, abbr=TRUE), 
                         Pace, group=factor(year(Date)), colour=factor(year(Date)))) + labs(x = "Month",
