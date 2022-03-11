@@ -83,13 +83,13 @@ total_2021
 total_2022
 
 # average pace by day of week
-avg_Monday <- mean(run_data[which(run_data$Day.of.week=='Monday'), 5])
-avg_Tuesday <- mean(run_data[which(run_data$Day.of.week=='Tuesday'), 5])
-avg_Wednesday <- mean(run_data[which(run_data$Day.of.week=='Wednesday'), 5])
-avg_Thursday <- mean(run_data[which(run_data$Day.of.week=='Thursday'), 5])
-avg_Friday <- mean(run_data[which(run_data$Day.of.week=='Friday'), 5])
-avg_Saturday <- mean(run_data[which(run_data$Day.of.week=='Saturday'), 5])
-avg_Sunday <- mean(run_data[which(run_data$Day.of.week=='Sunday'), 5])
+avg_Monday <- mean(joined_data[which(joined_data$Day.of.week=='Monday'), 5])
+avg_Tuesday <- mean(joined_data[which(joined_data$Day.of.week=='Tuesday'), 5])
+avg_Wednesday <- mean(joined_data[which(joined_data$Day.of.week=='Wednesday'), 5])
+avg_Thursday <- mean(joined_data[which(joined_data$Day.of.week=='Thursday'), 5])
+avg_Friday <- mean(joined_data[which(joined_data$Day.of.week=='Friday'), 5])
+avg_Saturday <- mean(joined_data[which(joined_data$Day.of.week=='Saturday'), 5])
+avg_Sunday <- mean(joined_data[which(joined_data$Day.of.week=='Sunday'), 5])
 avg_Monday
 avg_Tuesday
 avg_Wednesday
@@ -99,7 +99,7 @@ avg_Saturday
 avg_Sunday
 
 # pace and distance by month and wrapped by year
-pvt <- ggplot(data = run_data, aes(month(Date, label=TRUE, abbr=TRUE), y = Pace))
+pvt <- ggplot(data = joined_data, aes(month(Date, label=TRUE, abbr=TRUE), y = Pace))
 pvt + theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Pace less than 10.5 \n by Month Faceted by Year") + geom_point(aes(color = distance), shape = 21, fill = "white", 
                  size = 2, stroke = 2) + scale_color_gradient2(midpoint=7.5, low="blue", mid="green",
                                                                high="red", space ="Lab" ) +
@@ -109,18 +109,18 @@ pvt + theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Pace less than 10
   facet_wrap(~Year) 
 
 # distance and pace by month and wrapped by year
-pvt <- ggplot(data = run_data, aes(month(Date, label=TRUE, abbr=TRUE), y = distance))
+pvt <- ggplot(data = joined_data, aes(month(Date, label=TRUE, abbr=TRUE), y = distance))
 pvt + theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Month by Distance Faceted by Year") + geom_point(aes(color = Pace), shape = 21, fill = "white", 
                  size = 3, stroke = 2) + labs(x = "Month",
                                               y = "Distance")+ scale_color_gradientn(colors = rainbow(10)) +
   facet_wrap(~Year) 
 
-pvt <- ggplot(data = run_data, aes(x = MD, y = Pace, group=Year))
+pvt <- ggplot(data = joined_data, aes(x = MD, y = Pace, group=Year))
 pvt + theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Runs") + geom_point(aes(color = Year), shape = 21, fill = "white", 
                                                                                    size = 3, stroke = 2)
 
 # Plot of pace by year
-ggplot(run_data, aes(month(Date, label=TRUE, abbr=TRUE), 
+ggplot(joined_data, aes(month(Date, label=TRUE, abbr=TRUE), 
                         Pace, group=factor(year(Date)), colour=factor(year(Date)))) +
   geom_point(shape = 21, fill = "white", 
              size = 3, stroke = 2) +
@@ -128,33 +128,32 @@ ggplot(run_data, aes(month(Date, label=TRUE, abbr=TRUE),
   theme_classic()
 
 # Plot of pace by year
-ggplot(run_data, aes(month(Date, label=TRUE, abbr=TRUE), 
+ggplot(joined_data, aes(month(Date, label=TRUE, abbr=TRUE), 
                         Pace, group=factor(year(Date)), colour=factor(year(Date)))) + labs(x = "Month",
                                                                                            y = "Pace") +
   geom_bar(stat = "identity") +
   theme_classic()
 
-#pvt <- ggplot(data = joined_data, aes(x = Date, y = Pace))
-#pvt + scale_x_date(breaks = "1 month", date_labels = "%B") + geom_point(aes(color = Year), shape = 21, fill = "white", 
-                                                                        #size = 3, stroke = 2) 
+pvt <- ggplot(data = joined_data, aes(x = Date, y = Pace))
+pvt + theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1)) + scale_x_date(breaks = "1 month", date_labels = "%B") + geom_point(aes(color = Year), shape = 21, fill = "white", size = 3, stroke = 2) 
 
-#pvt <- ggplot(data = joined_data, aes(x = Month, y = Pace))
-#pvt + geom_point(aes(color=distance), shape = 21, fill = "white", 
-                 #size = 3, stroke = 2) + theme_light()  + scale_color_gradientn(colors = rainbow(2)) +
-  #facet_wrap(~Day.of.week) 
+pvt <- ggplot(data = joined_data, aes(x = Month, y = Pace))
+pvt + geom_point(aes(color=distance), shape = 21, fill = "white", 
+                 size = 3, stroke = 2) + theme_light()  + scale_color_gradientn(colors = rainbow(2)) +
+  facet_wrap(~Day.of.week) 
 
-#pvt <- ggplot(data = joined_data, aes(x = Date, y = Pace))
-#pvt + ggtitle("Runs by Year and Pace, Legend is Distance") + scale_x_date(breaks = "1 year", date_labels = "%Y") + geom_point(aes(color = distance), size = 1, stroke = 2) +
-  #theme_light()  + scale_color_gradientn(colors = rainbow(5)) 
-
+pvt <- ggplot(data = joined_data, aes(x = Date, y = Pace))
+pvt + ggtitle("Runs by Year and Pace, Legend is Distance") + scale_x_date(breaks = "1 year", date_labels = "%Y") + geom_point(aes(color = distance), size = 1, stroke = 2) +
+  theme_light()  + scale_color_gradientn(colors = rainbow(5)) 
 
 
-#ovt <- ggplot(data = joined_data, aes(x = Date, y = Pace)) 
-#ovt + ggtitle("Runs by Year and Pace faceted by Day of Week, Legend is Average Day Temp") + scale_x_date(breaks = "1 year", date_labels = "%Y") + geom_point(aes(color = TOBS), size = 1, stroke = 2) + 
-  #theme_light()  + scale_color_gradientn(colors = rainbow(5)) +
-  #facet_wrap("Day.of.week")
 
-#ovt <- ggplot(data = joined_data, aes(x = distance, y = Pace)) 
-#ovt + ggtitle("Runs by Distance and Pace faceted by Month, Legend is Average Day Temp") + geom_point(aes(color = TOBS), size = 1, stroke = 2) + 
-  #theme_light()  + scale_color_gradientn(colors = rainbow(5)) +
-  #facet_wrap("Month")
+ovt <- ggplot(data = joined_data, aes(x = Date, y = Pace)) 
+ovt + ggtitle("Runs by Year and Pace faceted by Day of Week, Legend is Average Day Temp") + scale_x_date(breaks = "1 year", date_labels = "%Y") + geom_point(aes(color = TOBS), size = 1, stroke = 2) + 
+  theme_light()  + scale_color_gradientn(colors = rainbow(5)) +
+  facet_wrap("Day.of.week")
+
+ovt <- ggplot(data = joined_data, aes(x = distance, y = Pace)) 
+ovt + ggtitle("Runs by Distance and Pace faceted by Month, Legend is Average Day Temp") + geom_point(aes(color = TOBS), size = 1, stroke = 2) + 
+  theme_light()  + scale_color_gradientn(colors = rainbow(5)) +
+  facet_wrap("Month")
