@@ -34,7 +34,25 @@ pvt <- ggplot(data = joined_data, aes(month(Date, label=TRUE, abbr=TRUE), y = Pa
 pvt + theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Pace by Month Faceted by Year") + geom_point(aes(color = distance), shape = 21, fill = "white", 
                  size = 3, stroke = 2) + scale_color_gradientn(colors = rainbow(8)) + labs(x = "Months",
                                                                                            y = "Pace") +
-  facet_wrap(~Year) 
+  facet_wrap(~Year)
+
+#total miles by day of week
+total_Monday <- sum(joined_data[which(joined_data$Day.of.week=='Monday'), 3])
+total_Tuesday <- sum(joined_data[which(joined_data$Day.of.week=='Tuesday'), 3])
+total_Wednesday <- sum(joined_data[which(joined_data$Day.of.week=='Wednesday'), 3])
+total_Thursday <- sum(joined_data[which(joined_data$Day.of.week=='Thursday'), 3])
+total_Friday <- sum(joined_data[which(joined_data$Day.of.week=='Friday'), 3])
+total_Saturday <- sum(joined_data[which(joined_data$Day.of.week=='Saturday'), 3])
+total_Sunday <- sum(joined_data[which(joined_data$Day.of.week=='Sunday'), 3])
+
+# average pace by day of week
+avg_Monday <- mean(joined_data[which(joined_data$Day.of.week=='Monday'), 5])
+avg_Tuesday <- mean(joined_data[which(joined_data$Day.of.week=='Tuesday'), 5])
+avg_Wednesday <- mean(joined_data[which(joined_data$Day.of.week=='Wednesday'), 5])
+avg_Thursday <- mean(joined_data[which(joined_data$Day.of.week=='Thursday'), 5])
+avg_Friday <- mean(joined_data[which(joined_data$Day.of.week=='Friday'), 5])
+avg_Saturday <- mean(joined_data[which(joined_data$Day.of.week=='Saturday'), 5])
+avg_Sunday <- mean(joined_data[which(joined_data$Day.of.week=='Sunday'), 5])
 
 # pace and distance by month and wrapped by year
 pvt <- ggplot(data = joined_data, aes(month(Date, label=TRUE, abbr=TRUE), y = Pace))
