@@ -30,6 +30,52 @@ str(joined_data$distance)
 joined_data$Pace <- (60*60*24*as.numeric(times(joined_data$Pace)))/60
 write.csv(joined_data, file = "joined_data_export.csv")
 
+# start 4.5 - 6.5 mile data
+run_data2 <- read.csv("run4_6_data2022.csv", sep = ",", quote = "\"", stringsAsFactors = FALSE)
+run_data2$Date <- as.Date(run_data2$Date, format="%m/%d/%Y")
+run_data2$Day.of.week <- as.factor(run_data2$Day.of.week)
+print(is.factor(run_data2$Day.of.week))
+#run_data$Date = as.yearmon(run_data$Date)
+
+run_data2 <- as_tibble(run_data2)
+#run_data$Pace <- (60*60*24*as.numeric(times(run_data$Pace)))/60
+
+weather_data2 <- read.csv("weather.csv", sep = ",", quote = "\"", stringsAsFactors = FALSE)
+weather_data2$DATE <- as.Date(weather_data2$DATE, format="%m/%d/%Y")
+#weather_data$DATE <- as.yearmon(weather_data$DATE)
+joined_data2 <- merge(run_data2,weather_data2, by.x = "Date", by.y = "DATE", all.x = TRUE, all.y = FALSE)
+
+str(joined_data2)
+
+joined_data2$Date <- as.Date(joined_data2$Date, format = "%m/%d/%Y")
+
+joined_data2$distance <- as.double(joined_data2$distance)
+str(joined_data2$distance)
+joined_data2$Pace <- (60*60*24*as.numeric(times(joined_data2$Pace)))/60
+
+ovt <- ggplot(data = joined_data2, aes(x = year(Date), y = Pace)) 
+ovt + ggtitle("Runs by Distance and Pace faceted by Month, Legend is Average Day Temp") + geom_point(aes(color = Avg.Temp), size = 1, stroke = 2) + 
+  theme_light() + scale_color_gradientn(colors = rainbow(5)) +
+  coord_cartesian(xlim = c(2013,2022),ylim = c(8.0,9.5)) 
+
+ovt <- ggplot(data = joined_data2, aes(x = year(Date), y = Pace)) 
+ovt + ggtitle("Runs by Distance and Pace faceted by Month, Legend is Average Day Temp") + geom_point(aes(color = Avg.Temp), size = 1, stroke = 2) + 
+  theme_light() + scale_color_gradientn(colors = rainbow(5)) +
+  coord_cartesian(xlim = c(2015,2020),ylim = c(8.0,9.5)) 
+
+ggplot(joined_data2, aes(month(Date, label=TRUE, abbr=TRUE), 
+                        Pace, group=factor(year(Date)), colour=factor(year(Date)))) +
+  geom_point(shape = 21, fill = "white", 
+             size = 3, stroke = 2) +
+  labs(x="Month", colour="TOBS") +
+  theme_classic()
+
+
+ovt <- ggplot(data = joined_data2, aes(x = Date, y = Pace)) 
+ovt + theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Runs by Year and Pace faceted by Day of Week,  \n Legend is Average Daily Temp. F") + scale_x_date(breaks = "1 year", date_labels = "%Y") + geom_point(aes(color = Avg.Temp), size = 1, stroke = 2) + scale_color_gradientn(colors = rainbow(5)) +
+    coord_cartesian(ylim = c(8.0,9.5))
+# End 4 - 6 mile data
+
 # pace and distance by month and wrapped by year
 pvt <- ggplot(data = joined_data, aes(month(Date, label=TRUE, abbr=TRUE), y = Pace))
 pvt + theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Pace by Month Faceted by Year") + geom_point(aes(color = distance), shape = 21, fill = "white", 
